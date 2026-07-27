@@ -1,0 +1,17 @@
+#!/bin/sh
+#DESC:Tiny template app used to verify placeholder-backed equivalence keys
+#TYPE:app
+#ARCH:noarch
+#TARGET:template-message/{flavor}
+#PH:flavor:red,blue
+
+set -eu
+
+mkdir -p "$CNT_PREFIX/bin"
+printf '%s\n' '{flavor}' > "$CNT_PREFIX/flavor.txt"
+
+cat > "$CNT_PREFIX/bin/cnt-template-message" <<'EOF'
+#!/bin/sh
+cat "$(dirname "$0")/../flavor.txt"
+EOF
+chmod +x "$CNT_PREFIX/bin/cnt-template-message"

@@ -1,0 +1,6 @@
+#DESC:Tiny standalone data artifact
+#TYPE:data
+#ARCH:noarch
+
+mkdir -p "$CNT_PREFIX"
+printf '%s\n' 'plain cnt-test data 1.0' > "$CNT_PREFIX/plain.txt"

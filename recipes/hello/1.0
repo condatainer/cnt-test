@@ -1,0 +1,10 @@
+#DESC:Tiny self-contained app used by registry tests
+#TYPE:app
+#ARCH:noarch
+
+mkdir -p "$CNT_PREFIX/bin"
+cat > "$CNT_PREFIX/bin/cnt-test-hello" <<'EOF'
+#!/bin/sh
+printf '%s\n' 'hello from cnt-test app 1.0'
+EOF
+chmod 0755 "$CNT_PREFIX/bin/cnt-test-hello"

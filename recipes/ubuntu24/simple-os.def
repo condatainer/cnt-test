@@ -1,0 +1,10 @@
+#DESC:Small OS overlay providing jq
+#URL:https://jqlang.github.io/jq/
+
+Bootstrap: docker
+From: ubuntu:24.04
+
+%post
+    apt-get update
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends jq
+    rm -rf /var/lib/apt/lists/*

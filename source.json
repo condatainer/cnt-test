@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "repository": "https://github.com/condatainer/cnt-test",
+  "default_base": "ubuntu24",
+  "oci": {
+    "push": "ghcr.io/condatainer/cnt-test",
+    "pull": ["ghcr.io/condatainer/cnt-test"],
+    "visibility": "public"
+  }
+}

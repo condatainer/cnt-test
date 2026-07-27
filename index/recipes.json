@@ -1,0 +1,46 @@
+{
+  "hello/1.0": {
+    "path": "recipes/hello/1.0",
+    "type": "app",
+    "description": "Tiny self-contained app used by registry tests"
+  },
+  "testdata/combined/1.0": {
+    "path": "recipes/testdata/combined/1.0",
+    "type": "data",
+    "description": "Tiny data artifact built from app and data dependencies",
+    "deps": ["hello/1.0", "testdata/plain/1.0"]
+  },
+  "testdata/plain/1.0": {
+    "path": "recipes/testdata/plain/1.0",
+    "type": "data",
+    "description": "Tiny standalone data artifact"
+  },
+  "template-message": {
+    "path": "recipes/template-message",
+    "type": "app",
+    "description": "Tiny template app used to test placeholder-backed equivalence keys",
+    "is_template": true,
+    "target_template": "template-message/{flavor}",
+    "ph": {
+      "flavor": ["red", "blue"]
+    }
+  },
+  "ubuntu24/base": {
+    "path": "recipes/ubuntu24/base.def",
+    "type": "base",
+    "description": "Ubuntu 24.04 test base with Apptainer and micromamba",
+    "url": "https://hub.docker.com/_/ubuntu"
+  },
+  "ubuntu24/simple-os": {
+    "path": "recipes/ubuntu24/simple-os.def",
+    "type": "os",
+    "description": "Small OS overlay providing jq",
+    "url": "https://jqlang.github.io/jq/"
+  },
+  "ubuntu24/versioned-os/1.0": {
+    "path": "recipes/ubuntu24/versioned-os/1.0.def",
+    "type": "os",
+    "description": "Versioned OS overlay used to test immutable OCI tags",
+    "url": "https://packages.ubuntu.com/noble/tree"
+  }
+}
