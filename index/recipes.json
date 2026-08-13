@@ -1,4 +1,9 @@
 {
+  "testdata/layers/20g": {
+    "path": "recipes/testdata/layers/20g",
+    "type": "data",
+    "description": "Synthetic 20 GiB payload for testing multipart OCI layers"
+  },
   "hello/1.0": {
     "path": "recipes/hello/1.0",
     "type": "app",

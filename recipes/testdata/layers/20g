@@ -1,0 +1,19 @@
+#DESC:Synthetic 20 GiB payload for testing multipart OCI layers
+#TYPE:data
+#ARCH:noarch
+
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=4G
+#SBATCH --time=08:00:00
+
+set -euo pipefail
+
+mkdir -p "$CNT_PREFIX"
+
+# Random input is intentional: zero-filled or sparse data would compress to a
+# tiny SquashFS and would not exercise CondaTainer's 512 MiB layer splitting.
+# This writes exactly 20 GiB before the small marker file is added.
+dd if=/dev/urandom of="$CNT_PREFIX/payload.bin" bs=64M count=320 status=progress
+
+printf '%s\n' 'Synthetic registry transport stress fixture; no application data.' \
+  > "$CNT_PREFIX/README.txt"
