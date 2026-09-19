@@ -1,4 +1,4 @@
-#DESC:Minimal Ubuntu 24.04 container root with bash, e2fsprogs and fuse2fs
+#DESC:Minimal Ubuntu 24.04 container root with bash, e2fsprogs, fuse2fs and curl
 #URL:https://hub.docker.com/_/ubuntu
 
 Bootstrap: docker
@@ -8,5 +8,5 @@ From: ubuntu:24.04
     export DEBIAN_FRONTEND=noninteractive
     echo 'APT::Sandbox::User "root";' > /etc/apt/apt.conf.d/99-no-sandbox
     apt-get update
-    apt-get install -y --no-install-recommends bash e2fsprogs fuse2fs
+    apt-get install -y --no-install-recommends bash e2fsprogs fuse2fs curl ca-certificates
     rm -rf /var/lib/apt/lists/* /etc/apt/apt.conf.d/99-no-sandbox

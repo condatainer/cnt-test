@@ -1,0 +1,20 @@
+#!/bin/bash
+#DESC: code-server (Open source VS Code in the browser), for testing helpers against cnt-test
+#NCPUS: 2
+#MEM: 4G
+#TIME: 02:00:00
+
+#REQUIRED_OVERLAYS: code-server
+
+code-server \
+    --disable-update-check \
+    --bind-addr "${CNT_HELPER_BIND_ADDR:-127.0.0.1}:${CNT_HELPER_PORT}" \
+    --auth none \
+    "${CNT_HELPER_CWD:-.}" &
+PID=$!
+
+condatainer _server_ready \
+    --port "$CNT_HELPER_PORT" \
+    --url-path "?folder=${CNT_HELPER_CWD}"
+
+wait $PID

@@ -6,10 +6,11 @@ distribution. Its descriptor publishes to the `public` endpoint
 
 | Artifact | Type | Purpose |
 |---|---|---|
-| `ubuntu24/base` | os | Minimal container root: `bash`, `e2fsprogs`, `fuse2fs` |
+| `ubuntu24/base` | os | Minimal container root: `bash`, `e2fsprogs`, `fuse2fs`, `curl` |
 | `ubuntu24/simple-os` | os | Small definition-built OS layer containing `jq` |
 | `ubuntu24/versioned-os/1.0` | os | Versioned OS producing OCI repository `ubuntu24/versioned-os`, tag `1.0` |
 | `hello/1.0` | app | `noarch` command named `cnt-test-hello` |
+| `code-server/{version}` | app | Real-world template app: the code-server release tarball, one image per version |
 | `template-message/{red,blue}` | app | One template recipe whose selected placeholder changes its equivalence SHA |
 | `testdata/plain/1.0` | data | Standalone `noarch` text payload |
 | `testdata/hello/1.0/combined` | data | Depends on the app and the plain data artifact |
@@ -43,6 +44,22 @@ With `default_distro: ubuntu24`, `create` first checks each name exactly and the
 tries the `ubuntu24/` prefix for names containing at most one slash. Thus the
 commands above resolve to `ubuntu24/base`, `ubuntu24/simple-os` and
 `ubuntu24/versioned-os/1.0`.
+
+## Helper test
+
+`helpers/code-server-test` launches code-server with authentication off. It
+requires the bare name `code-server` and has no version parameter, so the
+newest version is resolved when the helper starts: an installed version wins,
+otherwise the newest `code-server/{version}` is built from the recipe.
+
+```text
+condatainer helper code-server-test
+condatainer helper --no-submit code-server-test
+```
+
+Run it once with no `code-server` installed to test the build-latest path, and
+again after installing an older version (`condatainer create code-server/4.135.0`)
+to test that the installed one is used.
 
 ## Template equivalence-key test
 

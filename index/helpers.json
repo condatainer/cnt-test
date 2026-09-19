@@ -1,0 +1,5 @@
+{
+  "code-server-test": {
+    "path": "helpers/code-server-test"
+  }
+}

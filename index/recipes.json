@@ -1,4 +1,15 @@
 {
+  "code-server": {
+    "description": "code-server {version}, VS Code in the browser",
+    "is_template": true,
+    "path": "recipes/code-server",
+    "ph": {
+      "version": ["4.137.0", "4.136.2", "4.135.0"]
+    },
+    "target_template": "code-server/{version}",
+    "type": "app",
+    "url": "https://github.com/coder/code-server"
+  },
   "hello/1.0": {
     "description": "Tiny self-contained app used by registry tests",
     "path": "recipes/hello/1.0",
@@ -31,7 +42,7 @@
     "type": "data"
   },
   "ubuntu24/base": {
-    "description": "Minimal Ubuntu 24.04 container root with bash, e2fsprogs and fuse2fs",
+    "description": "Minimal Ubuntu 24.04 container root with bash, e2fsprogs, fuse2fs and curl",
     "path": "recipes/ubuntu24/base.def",
     "type": "os",
     "url": "https://hub.docker.com/_/ubuntu"
