@@ -1,5 +1,5 @@
+#!/usr/bin/env bash
 #DESC:Tiny standalone data artifact
-#TYPE:data
 #ARCH:noarch
 
 mkdir -p "$CNT_PREFIX"

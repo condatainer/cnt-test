@@ -1,38 +1,12 @@
-#DESC:Ubuntu 24.04 test base with Apptainer and micromamba
+#DESC:Minimal Ubuntu 24.04 container root with bash, e2fsprogs and fuse2fs
 #URL:https://hub.docker.com/_/ubuntu
 
 Bootstrap: docker
 From: ubuntu:24.04
 
 %post
-    set -eu
     export DEBIAN_FRONTEND=noninteractive
-
-    if [ "$(dpkg --print-architecture)" != "amd64" ]; then
-        printf '%s\n' 'The cnt-test Ubuntu 24 base currently supports amd64 only.' >&2
-        exit 1
-    fi
-
+    echo 'APT::Sandbox::User "root";' > /etc/apt/apt.conf.d/99-no-sandbox
     apt-get update
-    apt-get install -y --no-install-recommends \
-        bash zsh fish \
-        bzip2 xz-utils zstd squashfs-tools \
-        ca-certificates \
-        curl wget
-
-    apptainer_version="1.5.2"
-    apptainer_deb="apptainer_${apptainer_version}_amd64.deb"
-    curl -fL --retry 3 \
-        "https://github.com/apptainer/apptainer/releases/download/v${apptainer_version}/${apptainer_deb}" \
-        -o "/tmp/${apptainer_deb}"
-    apt-get install -y "/tmp/${apptainer_deb}"
-    rm -f "/tmp/${apptainer_deb}"
-
-    micromamba_version="2.6.2-1"
-    curl -fL --retry 3 \
-        "https://github.com/mamba-org/micromamba-releases/releases/download/${micromamba_version}/micromamba-linux-64" \
-        -o /usr/bin/micromamba
-    chmod 0755 /usr/bin/micromamba
-
-    apt-get clean
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y --no-install-recommends bash e2fsprogs fuse2fs
+    rm -rf /var/lib/apt/lists/* /etc/apt/apt.conf.d/99-no-sandbox

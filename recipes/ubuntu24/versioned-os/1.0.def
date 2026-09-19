@@ -5,10 +5,9 @@ Bootstrap: docker
 From: ubuntu:24.04
 
 %post
-    set -eu
     export DEBIAN_FRONTEND=noninteractive
+    echo 'APT::Sandbox::User "root";' > /etc/apt/apt.conf.d/99-no-sandbox
     apt-get update
     apt-get install -y --no-install-recommends tree
     tree --version
-    apt-get clean
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* /etc/apt/apt.conf.d/99-no-sandbox

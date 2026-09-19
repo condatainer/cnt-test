@@ -5,6 +5,8 @@ Bootstrap: docker
 From: ubuntu:24.04
 
 %post
+    export DEBIAN_FRONTEND=noninteractive
+    echo 'APT::Sandbox::User "root";' > /etc/apt/apt.conf.d/99-no-sandbox
     apt-get update
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends jq
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y --no-install-recommends jq
+    rm -rf /var/lib/apt/lists/* /etc/apt/apt.conf.d/99-no-sandbox

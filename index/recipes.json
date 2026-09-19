@@ -1,51 +1,51 @@
 {
-  "testdata/layers/20g": {
-    "path": "recipes/testdata/layers/20g",
-    "type": "data",
-    "description": "Synthetic 20 GiB payload for testing multipart OCI layers"
-  },
   "hello/1.0": {
+    "description": "Tiny self-contained app used by registry tests",
     "path": "recipes/hello/1.0",
-    "type": "app",
-    "description": "Tiny self-contained app used by registry tests"
-  },
-  "testdata/combined/1.0": {
-    "path": "recipes/testdata/combined/1.0",
-    "type": "data",
-    "description": "Tiny data artifact built from app and data dependencies",
-    "deps": ["hello/1.0", "testdata/plain/1.0"]
-  },
-  "testdata/plain/1.0": {
-    "path": "recipes/testdata/plain/1.0",
-    "type": "data",
-    "description": "Tiny standalone data artifact"
+    "type": "app"
   },
   "template-message": {
-    "path": "recipes/template-message",
-    "type": "app",
-    "description": "Tiny template app used to test placeholder-backed equivalence keys",
+    "description": "Tiny template app used to verify placeholder-backed equivalence keys",
     "is_template": true,
-    "target_template": "template-message/{flavor}",
+    "path": "recipes/template-message",
     "ph": {
       "flavor": ["red", "blue"]
-    }
+    },
+    "target_template": "template-message/{flavor}",
+    "type": "app"
+  },
+  "testdata/hello/1.0/combined": {
+    "deps": ["hello/1.0", "testdata/plain/1.0"],
+    "description": "Tiny data artifact built from an app and a data dependency",
+    "path": "recipes/testdata/hello/1.0/combined",
+    "type": "data"
+  },
+  "testdata/layers/20g": {
+    "description": "Synthetic 20 GiB payload for testing multipart OCI layers",
+    "path": "recipes/testdata/layers/20g",
+    "type": "data"
+  },
+  "testdata/plain/1.0": {
+    "description": "Tiny standalone data artifact",
+    "path": "recipes/testdata/plain/1.0",
+    "type": "data"
   },
   "ubuntu24/base": {
+    "description": "Minimal Ubuntu 24.04 container root with bash, e2fsprogs and fuse2fs",
     "path": "recipes/ubuntu24/base.def",
-    "type": "base",
-    "description": "Ubuntu 24.04 test base with Apptainer and micromamba",
+    "type": "os",
     "url": "https://hub.docker.com/_/ubuntu"
   },
   "ubuntu24/simple-os": {
+    "description": "Small OS overlay providing jq",
     "path": "recipes/ubuntu24/simple-os.def",
     "type": "os",
-    "description": "Small OS overlay providing jq",
     "url": "https://jqlang.github.io/jq/"
   },
   "ubuntu24/versioned-os/1.0": {
+    "description": "Versioned OS overlay used to test immutable OCI tags",
     "path": "recipes/ubuntu24/versioned-os/1.0.def",
     "type": "os",
-    "description": "Versioned OS overlay used to test immutable OCI tags",
     "url": "https://packages.ubuntu.com/noble/tree"
   }
 }

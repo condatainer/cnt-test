@@ -1,12 +1,10 @@
+#!/usr/bin/env bash
 #DESC:Synthetic 20 GiB payload for testing multipart OCI layers
-#TYPE:data
 #ARCH:noarch
 
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=4G
 #SBATCH --time=08:00:00
-
-set -euo pipefail
 
 mkdir -p "$CNT_PREFIX"
 

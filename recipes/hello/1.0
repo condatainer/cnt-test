@@ -1,10 +1,11 @@
+#!/usr/bin/env bash
 #DESC:Tiny self-contained app used by registry tests
-#TYPE:app
 #ARCH:noarch
+#REDISTRIBUTE:yes
 
 mkdir -p "$CNT_PREFIX/bin"
-cat > "$CNT_PREFIX/bin/cnt-test-hello" <<'EOF'
+cat > "$CNT_PREFIX/bin/cnt-test-hello" <<'EOT'
 #!/bin/sh
 printf '%s\n' 'hello from cnt-test app 1.0'
-EOF
+EOT
 chmod 0755 "$CNT_PREFIX/bin/cnt-test-hello"

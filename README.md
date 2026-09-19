@@ -1,44 +1,48 @@
 # cnt-test
 
 Small recipe collection for exercising CondaTainer builds and OCI registry
-distribution. Its descriptor uses the internal endpoint
-`ghcr.io/condatainer/cnt-test`, which permits every test artifact type.
+distribution. Its descriptor publishes to the `public` endpoint
+`ghcr.io/condatainer/cnt-test`.
 
 | Artifact | Type | Purpose |
 |---|---|---|
-| `ubuntu24/base` | base | Ubuntu 24.04 with Apptainer 1.5.2, micromamba 2.6.2-1, and SquashFS tools |
-| `testdata/layers/20g` | data | Synthetic 20 GiB payload for multipart OCI-layer testing |
+| `ubuntu24/base` | os | Minimal container root: `bash`, `e2fsprogs`, `fuse2fs` |
 | `ubuntu24/simple-os` | os | Small definition-built OS layer containing `jq` |
 | `ubuntu24/versioned-os/1.0` | os | Versioned OS producing OCI repository `ubuntu24/versioned-os`, tag `1.0` |
 | `hello/1.0` | app | `noarch` command named `cnt-test-hello` |
 | `template-message/{red,blue}` | app | One template recipe whose selected placeholder changes its equivalence SHA |
 | `testdata/plain/1.0` | data | Standalone `noarch` text payload |
-| `testdata/combined/1.0` | data | Depends on the app and plain data artifact |
+| `testdata/hello/1.0/combined` | data | Depends on the app and the plain data artifact |
+| `testdata/layers/20g` | data | Synthetic 20 GiB payload for multipart OCI-layer testing |
+
+The apps declare `#REDISTRIBUTE:yes`, which a public endpoint requires of an
+app; OS and data recipes need no declaration.
 
 ## Use as a source
 
 Configure the repository's GitHub `main` branch as a source, then build the
-dependency-backed root:
+dependency-backed artifact:
 
 ```text
 condatainer config prepend sources test=https://raw.githubusercontent.com/condatainer/cnt-test/main
-condatainer create testdata/combined/1.0
+condatainer create testdata/hello/1.0/combined
 ```
 
 For local development, replace the URL with the absolute path to this checkout.
 
-That covers dependency resolution and produces all three script-backed
+That resolves the dependency graph and builds all three script-backed
 artifacts. Build the definition-backed cases separately:
 
 ```text
-condatainer update --base
+condatainer create base
 condatainer create simple-os
 condatainer create versioned-os/1.0
 ```
 
-With `base: ubuntu24`, create first checks each name exactly and then tries the
-`ubuntu24/` prefix for names containing at most one slash. Thus the two commands
-above resolve to `ubuntu24/simple-os` and `ubuntu24/versioned-os/1.0`.
+With `default_distro: ubuntu24`, `create` first checks each name exactly and then
+tries the `ubuntu24/` prefix for names containing at most one slash. Thus the
+commands above resolve to `ubuntu24/base`, `ubuntu24/simple-os` and
+`ubuntu24/versioned-os/1.0`.
 
 ## Template equivalence-key test
 
@@ -75,15 +79,15 @@ condatainer registry push ubuntu24/simple-os
 condatainer registry push ubuntu24/versioned-os/1.0
 condatainer registry push hello/1.0
 condatainer registry push testdata/plain/1.0
-condatainer registry push testdata/combined/1.0
+condatainer registry push testdata/hello/1.0/combined
 ```
 
-Each push infers `ghcr.io/condatainer/cnt-test` and `public` endpoint visibility from
+Each push infers `ghcr.io/condatainer/cnt-test` and the `public` audience from
 the artifact's recorded source and `source.json`. Add `--registry` to override
 the inferred destination.
 
 > [!NOTE]
-> CondaTainer's endpoint visibility is a publication policy; it does not set
+> CondaTainer's endpoint audience is a publication policy; it does not set
 > the GHCR package visibility. A package first created by a local push is not
 > public even when `cnt-test` is public and **Inherit access from source
 > repository** is enabled. Make each distinct GHCR package public once under
@@ -91,8 +95,9 @@ the inferred destination.
 > that package retain its public visibility.
 
 Remove the local images and run `create` again to exercise automatic prebuilt
-acquisition. The combined data artifact tests both dependency forms: app
-equivalence by name and data equivalence by its recorded equivalence key.
+acquisition. The combined data artifact tests both dependency forms: `hello/1.0` appears
+in its name, so it counts toward equivalence by name, and `testdata/plain/1.0`
+counts by its recorded equivalence key.
 
 ## Large multipart-layer test
 

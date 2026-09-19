@@ -1,10 +1,11 @@
-#DESC:Tiny data artifact built from app and data dependencies
-#TYPE:data
+#!/usr/bin/env bash
+#DESC:Tiny data artifact built from an app and a data dependency
 #ARCH:noarch
+
 #DEP:hello/1.0
 #DEP:testdata/plain/1.0
 
 mkdir -p "$CNT_PREFIX"
 cnt-test-hello > "$CNT_PREFIX/app-output.txt"
 cp /cnt/testdata/plain/1.0/plain.txt "$CNT_PREFIX/plain-copy.txt"
-printf '%s\n' 'combined cnt-test data 1.0' > "$CNT_PREFIX/combined.txt"
+printf '%s\n' 'combined cnt-test data' > "$CNT_PREFIX/combined.txt"
